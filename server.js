@@ -1,6 +1,5 @@
 import modulo from './archivo.js'
 import express from 'express'
-import handlebars from 'express-handlebars';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -22,14 +21,7 @@ server.on("error", error => console.log(`Error en servidor ${error}`))
 app.use(express.static('public'));
 
 
-app.engine('hbs', handlebars({
-    extname: '.hbs',
-    defaultLayout: 'index.hbs',
-    layoutsDir: path.join(__dirname, '/views/layouts'),
-    partialsDir: path.join(__dirname, '/views/partials')
-}))
-app.set('view engine', 'hbs')
-app.set('views', './views')
+app.set('view engine', 'ejs')
 
 
 app.use(express.json());
@@ -40,22 +32,13 @@ let listProducts = modulo.products;
 app.use('/api/productos', router)
 
 router.get('/listar', (req,res) => { 
-    if(listProducts.length>0) {
-        //console.log(listProducts.title)
-        res.render('view', {
+        res.render('pages/view', {
             datos: listProducts,
             listExists: true
         });
-    } else {
-        res.render('view',{
-            data: "No hay productos cargados."
-        })
-    }
+        //console.log(listProducts)
 }) 
 
-// router.get('/', function(req, res) {
-//     res.render('index', { datos: json(listProducts) });
-// });
 
 router.get('/listar/:id', (req,res) => {
     let params = req.params;
@@ -68,7 +51,7 @@ router.get('/listar/:id', (req,res) => {
 }) 
 
 router.get('/guardar', (req,res)=>{
-    res.render('home');
+    res.render('pages/home');
 })
 
 router.post('/guardar', (req,res) => {
