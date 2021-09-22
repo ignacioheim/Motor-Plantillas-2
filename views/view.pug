@@ -1,0 +1,15 @@
+extends header
+
+block content
+
+    h1="Datos producto"
+
+    if listExists
+
+        ul
+            each pruduct in datos
+                li= pruduct.title
+                li= pruduct.price
+                img(src=li= pruduct.thumbnail class="imgTable")
+    else
+        h2="No hay productos cargados."

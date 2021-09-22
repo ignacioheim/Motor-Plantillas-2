@@ -20,9 +20,12 @@ server.on("error", error => console.log(`Error en servidor ${error}`))
 
 app.use(express.static('public'));
 
+app.set('views', './views');
+app.set('view engine', 'pug');
 
-app.set('view engine', 'ejs')
-
+// app.get('/prueba', (req,res)=>{
+//     res.render('partials/header.pug')
+// })
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -32,13 +35,12 @@ let listProducts = modulo.products;
 app.use('/api/productos', router)
 
 router.get('/listar', (req,res) => { 
-        res.render('pages/view', {
+        res.render('view', {
             datos: listProducts,
             listExists: true
         });
         //console.log(listProducts)
 }) 
-
 
 router.get('/listar/:id', (req,res) => {
     let params = req.params;
@@ -51,7 +53,7 @@ router.get('/listar/:id', (req,res) => {
 }) 
 
 router.get('/guardar', (req,res)=>{
-    res.render('pages/home');
+    res.render('home');
 })
 
 router.post('/guardar', (req,res) => {
@@ -87,3 +89,4 @@ router.delete('/borrar/:id', (req,res)=>{
         res.json({error: 'Producto no encontrado'})
     }
 })
+
